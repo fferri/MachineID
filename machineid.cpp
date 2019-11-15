@@ -5,6 +5,15 @@ QString machineID()
 {
     QString id("?");
 #ifdef _WIN32
+    HKEY key = NULL;
+    if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Cryptography", 0, KEY_READ, &key) == ERROR_SUCCESS)
+    {
+        wchar_t buffer[UuidStringLen + 1];
+        DWORD size = sizeof(buffer);
+        bool ok = (RegQueryValueEx(key, L"MachineGuid", NULL, NULL, (LPBYTE)buffer, &size) == ERROR_SUCCESS);
+        RegCloseKey(key);
+        if(ok) id = QStringView(buffer, (size - 1) / 2);
+    }
 #elif __APPLE__
     QStringList args;
     args << "-c" << "ioreg -rd1 -c IOPlatformExpertDevice |  awk '/IOPlatformUUID/ { print $3; }'";
