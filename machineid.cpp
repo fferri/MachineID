@@ -50,3 +50,13 @@ uint32_t machineIDHash()
     }
     return result;
 }
+
+QString machineIDHashKey()
+{
+    QString id = machineID();
+    QString hexhash = QCryptographicHash::hash(id.toLatin1(), QCryptographicHash::Md5).toHex();
+    QStringList groups;
+    for(int group = 0; group < 5; group++)
+        groups << hexhash.mid(group * 4, 4);
+    return groups.join('-').toUpper();
+}
