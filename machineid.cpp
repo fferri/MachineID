@@ -6,7 +6,7 @@ QString machineID()
     QString id("?");
 #ifdef _WIN32
     QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography", QSettings::NativeFormat);
-    id = settings.value("MachineGuid").toString();
+    id = settings.value("MachineGuid", id).toString();
 #elif __APPLE__
     QStringList args;
     args << "-c" << "ioreg -rd1 -c IOPlatformExpertDevice |  awk '/IOPlatformUUID/ { print $3; }'";
