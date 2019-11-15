@@ -17,10 +17,11 @@ QString machineID()
     fs << "/var/lib/dbus/machine-id" << "/etc/machine-id";
     for(const QString &f : fs)
     {
-        QFile fo(file);
+        QFile fo(f);
         if(!fo.open(QFile::ReadOnly | QFile::Text)) break;
         QTextStream in(&fo);
         id = in.readAll();
+        break;
     }
 #endif
     return id;

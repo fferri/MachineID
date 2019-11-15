@@ -1,1 +1,5 @@
 *.pro.user
+*.o
+.qmake.stash
+Makefile
+MachineID
